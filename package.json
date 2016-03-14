@@ -1,0 +1,40 @@
+{
+  "name": "jsreport-browser-client-dist",
+  "author": {
+    "name": "Jan Blaha"
+  },
+  "bugs": {
+    "url": "https://github.com/jsreport/jsreport-browser-client-dist/issues"
+  }, 
+  "description": "jsreport browser client standalone distribution",
+  "devDependencies": {
+    "eslint": "1.9.0",
+    "eslint-config-standard": "4.4.0",
+    "eslint-config-standard-react": "1.1.0",
+    "standard": "5.3.1",
+    "uglify-js": "^2.6.2"
+  },
+  "homepage": "https://github.com/jsreport/jsreport-browser-client-dist",
+  "installable": true,
+  "keywords": [
+    "jsreport"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "pofider",
+      "email": "jan.blaha@hotmail.com"
+    }
+  ],
+  "main": "jsreport.js",
+  "optionalDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jsreport/jsreport-browser-client-dist.git"
+  },
+  "scripts": {
+    "test": "standard",
+    "prepublish": "uglifyjs jsreport.js -o jsreport.min.js"
+  },
+  "version": "0.0.1"
+}
