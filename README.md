@@ -38,6 +38,9 @@ jsreport.download('myReport.pdf', request);
 jsreport.renderAsync(request).then(function(arrayBuffer) {
   console.log(arrayBuffer);
 });
+
+jsreport.getTemplateByName(name).then(..)
+jsreport.updateTemplate(template).then(..)
 ```
 
 You can find more details about the `request` argument  [jsreport-core](https://github.com/jsreport/jsreport-core) repository.

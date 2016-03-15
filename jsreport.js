@@ -148,6 +148,9 @@
     return new PromiseImpl(function (resolve, reject) {
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
+          xhr.response.toString = function () {
+            return String.fromCharCode.apply(null, new Uint8Array(xhr.response))
+          }
           resolve(xhr.response)
         } else {
           reject({
@@ -168,6 +171,44 @@
     })
   }
 
+  function _request (req) {
+    var xhr = new XMLHttpRequest()
+    xhr.open(req.method, this.serverUrl + req.path, true)
+    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8')
+
+    var PromiseImpl = this.promise || window.Promise || undefined
+
+    if (!PromiseImpl) {
+      throw new Error('Native Promise is not supported in this browser. Use jsreport.Promise = bluebirdOrAnyOtherLib;')
+    }
+
+    return new PromiseImpl(function (resolve, reject) {
+      xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          if (xhr.response) {
+            return resolve(JSON.parse(xhr.response))
+          }
+
+          resolve(xhr.response)
+        } else {
+          reject({
+            status: this.status,
+            statusText: xhr.statusText
+          })
+        }
+      }
+
+      xhr.onerror = function () {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText
+        })
+      }
+
+      xhr.send(req.data ? JSON.stringify(req.data) : undefined)
+    })
+  }
+
   JsReport.prototype = {
     render: function (placeholder, request) {
       return _render.call(this, placeholder, request)
@@ -177,6 +218,22 @@
       request.options = request.options || {}
       request.options['Content-Disposition'] = 'attachment;filename=' + filename
       return _render.call(this, '_self', request)
+    },
+
+    getTemplateByName: function (name) {
+      return _request.call(this, {
+        method: 'GET',
+        path: '/odata/templates?$filter=name' + encodeURI(" eq '" + name + "'")
+      }).then(function (r) {
+        if (r.value.length === 0) {
+          throw new Error('Template ' + name + ' not found')
+        }
+        return r.value[0]
+      })
+    },
+
+    updateTemplate: function (template) {
+      return _request.call(this, {method: 'PATCH', path: '/odata/templates(' + template._id + ')', data: template})
     },
 
     renderAsync: function (request) {
