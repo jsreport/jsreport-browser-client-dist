@@ -1,5 +1,6 @@
 {
   "name": "jsreport-browser-client-dist",
+  "version": "0.0.1",
   "author": {
     "name": "Jan Blaha"
   },
@@ -36,5 +37,7 @@
     "test": "standard",
     "prepublish": "uglifyjs jsreport.js -o jsreport.min.js"
   },
-  "version": "0.0.1"
+  "files": [
+    "jsreport.js", "jsreport.min.js"
+  ]
 }
