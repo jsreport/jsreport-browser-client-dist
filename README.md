@@ -2,7 +2,7 @@
 
 **Standalone distributable jsreport browser sdk**
 
-See docs for details http://jsreport.net/learn/phantom-pdf
+See docs for details http://jsreport.net/learn/browser-client
 
 ##License
 MIT
