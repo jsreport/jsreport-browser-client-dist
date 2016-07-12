@@ -148,10 +148,11 @@
     return new PromiseImpl(function (resolve, reject) {
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
-          xhr.response.toString = function () {
-            return String.fromCharCode.apply(null, new Uint8Array(xhr.response))
+          var response = xhr.response
+          response.toString = function () {
+            return decodeURIComponent(escape(String.fromCharCode.apply(null, new Uint8Array(response))))
           }
-          resolve(xhr.response)
+          resolve(response)
         } else {
           reject({
             status: this.status,
