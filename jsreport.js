@@ -12,6 +12,11 @@
     this.headers = this.headers || {}
   }
 
+  function isObject (value) {
+    var type = typeof value
+    return type === 'function' || (value && type === 'object') || false
+  }
+
   function _serverSideRender (request, placeholder) {
     var frameName = placeholder || '_blank'
 
@@ -51,15 +56,19 @@
     }
 
     function addBody (path, body) {
-      if (body === null || body === undefined) {
+      if (body === undefined) {
         return
       }
 
       for (var key in body) {
-        if (body[key] && Object.prototype.toString.call(body[key]) === '[object Object]') {
+        if (isObject(body[key])) {
+          // somehow it skips empty array for template.scripts, this condition fixes that
+          if (body[key] instanceof Array && body[key].length === 0) {
+            addInput(mapForm, path + '[' + key + ']', [])
+          }
           addBody(path + '[' + key + ']', body[key])
         } else {
-          if (body[key] !== null && body[key] !== undefined && !(body[key] instanceof Array)) {
+          if (body[key] !== undefined && !(body[key] instanceof Array)) {
             addInput(mapForm, path + '[' + key + ']', body[key])
           }
         }
