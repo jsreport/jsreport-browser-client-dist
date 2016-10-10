@@ -20,6 +20,13 @@
   "keywords": [
     "jsreport"
   ],
+  "standard": {
+    "ignore": [
+      "FileSaver.js",
+      "jsreport.min.js",
+      "/jsreport.js"
+    ]
+  },
   "license": "MIT",
   "maintainers": [
     {
@@ -35,7 +42,7 @@
   },
   "scripts": {
     "test": "standard",
-    "prepublish": "uglifyjs jsreport.js -o jsreport.min.js"
+    "prepublish": "uglifyjs src/jsreport.js -o tools/jsreport.min.js && node tools/build.js"
   },
   "files": [
     "jsreport.js", "jsreport.min.js"
