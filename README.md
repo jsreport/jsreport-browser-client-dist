@@ -4,5 +4,5 @@
 
 See docs for details http://jsreport.net/learn/browser-client
 
-##License
+## License
 MIT
