@@ -18,6 +18,18 @@ var saveAs=saveAs||function(e){"use strict";if(typeof e==="undefined"||typeof na
     return type === 'function' || (value && type === 'object') || false
   }
 
+  function responseToString (response) {
+    // String.fromCharCode.apply(null, new Uint8Array(response)) was too slow
+    // see https://github.com/jsreport/jsreport-browser-client-dist/issues/4
+    var array = new Uint8Array(response)
+    var res = ''
+    for (var i = 0; i < array.length; i++) {
+      res += String.fromCharCode(array[i])
+    }
+
+    return res
+  }
+
   function _serverSideRender (request, placeholder) {
     var frameName = placeholder || '_blank'
 
@@ -166,11 +178,11 @@ var saveAs=saveAs||function(e){"use strict";if(typeof e==="undefined"||typeof na
         if (this.status >= 200 && this.status < 300) {
           var response = xhr.response
           response.toString = function () {
-            return decodeURIComponent(escape(String.fromCharCode.apply(null, new Uint8Array(response))))
+            return decodeURIComponent(escape(responseToString(response)))
           }
           response.toDataURI = function () {
             var contentType = xhr.getResponseHeader('Content-Type')
-            var base64 = window.btoa(String.fromCharCode.apply(null, new Uint8Array(response)))
+            var base64 = window.btoa(responseToString(response))
             return 'data:' + contentType + ';base64, ' + base64
           }
 
