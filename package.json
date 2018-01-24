@@ -1,12 +1,12 @@
 {
   "name": "jsreport-browser-client-dist",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "author": {
     "name": "Jan Blaha"
   },
   "bugs": {
     "url": "https://github.com/jsreport/jsreport-browser-client-dist/issues"
-  }, 
+  },
   "description": "jsreport browser client standalone distribution",
   "devDependencies": {
     "eslint": "1.9.0",
