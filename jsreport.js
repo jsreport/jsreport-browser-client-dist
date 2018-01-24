@@ -185,11 +185,14 @@ var saveAs=saveAs||function(e){"use strict";if(typeof e==="undefined"||typeof na
             var base64 = window.btoa(responseToString(response))
             return 'data:' + contentType + ';base64, ' + base64
           }
-
-          response.download = function (afilename) {
+          response.toObjectURL = function () {
+            return URL.createObjectURL(response.toBlob())
+          }
+          response.toBlob = function () {
             var contentType = xhr.getResponseHeader('Content-Type')
             var dataView = new DataView(response)
             var blob
+
             try {
               blob = new Blob([dataView], { type: contentType })
             } catch (e) {
@@ -201,7 +204,11 @@ var saveAs=saveAs||function(e){"use strict";if(typeof e==="undefined"||typeof na
               }
             }
 
-            saveAs(blob, afilename)
+            return blob
+          }
+
+          response.download = function (afilename) {
+            saveAs(response.toBlob(), afilename)
           }
 
           resolve(response)
@@ -338,4 +345,3 @@ var saveAs=saveAs||function(e){"use strict";if(typeof e==="undefined"||typeof na
 
   return jsreportInstance
 }))
-
