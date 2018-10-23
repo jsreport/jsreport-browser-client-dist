@@ -212,9 +212,18 @@
 
           resolve(response)
         } else {
+          var error
+          try {
+            var body = responseToString(xhr.response)
+            error = JSON.parse(body)
+          } catch (e) {
+          }
+
           reject({
             status: this.status,
-            statusText: xhr.statusText
+            statusText: xhr.statusText,
+            error: error,
+            response: xhr.response
           })
         }
       }

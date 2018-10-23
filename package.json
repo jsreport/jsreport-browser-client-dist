@@ -45,6 +45,7 @@
     "prepublish": "uglifyjs src/jsreport.js -o tools/jsreport.min.js && node tools/build.js"
   },
   "files": [
-    "jsreport.js", "jsreport.min.js"
+    "jsreport.js",
+    "jsreport.min.js"
   ]
 }
