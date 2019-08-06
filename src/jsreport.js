@@ -176,6 +176,7 @@
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var response = xhr.response
+          response.xhr = xhr
           response.toString = function () {
             return decodeURIComponent(escape(responseToString(response)))
           }

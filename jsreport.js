@@ -177,6 +177,7 @@ var saveAs=saveAs||function(e){"use strict";if(typeof e==="undefined"||typeof na
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var response = xhr.response
+          response.xhr = xhr
           response.toString = function () {
             return decodeURIComponent(escape(responseToString(response)))
           }
